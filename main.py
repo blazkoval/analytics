@@ -26,6 +26,7 @@ from src.analysis_001 import (
     chart as chart002
 )
 
+
 template = """
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <style>
@@ -139,6 +140,10 @@ app.include_router(createRouter009(prefix="/analysis"))
 
 from src.analysis_999 import createrouter as createRouter999
 app.include_router(createRouter999(prefix="/analysis"))
+
+from src.analysis_BR import createRouter as createRouterBR
+app.include_router(createRouterBR(prefix="/analysis"))
+
 
 from src.analysis_calendar import createRouter as createRouter_calendar
 app.include_router(createRouter_calendar(prefix="/analysis"))
