@@ -120,8 +120,8 @@ app.include_router(createRouter000(prefix="/analysis"))
 from src.analysis_002 import createRouter as createRouter002
 app.include_router(createRouter002(prefix="/analysis"))
 
-from src.analysis_004 import createRouter as createRouter004
-app.include_router(createRouter004(prefix="/analysis"))
+#from src.analysis_004 import createRouter as createRouter004
+#app.include_router(createRouter004(prefix="/analysis"))
 
 from src.analysis_005 import createRouter as createRouter005
 app.include_router(createRouter005(prefix="/analysis"))

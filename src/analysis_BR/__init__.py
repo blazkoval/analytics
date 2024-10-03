@@ -34,7 +34,7 @@ query = """query($where: GroupInputWhereFilter){
       ]
     }
 """
-
+# where: {startdate: {_gt: "2022-09-01T00:00:00"}}
 async def resolve_json(variables, cookies):
     assert "where" in variables, f"missing where in parameters"
     jsonresponse = await queryGQL(
@@ -88,7 +88,7 @@ import io
 
 def createRouter(prefix):
     mainpath = "/presence"
-    tags = ["Přítomnost skupinách"]
+    tags = ["Události RB"]
 
     router = APIRouter(prefix=prefix)
     WhereDescription = "filtr omezující vybrané skupiny"
@@ -131,7 +131,9 @@ def createRouter(prefix):
         where: str = Query(description=WhereDescription), 
     ):
         "Data ve formátu JSON (stromová struktura) nevhodná pro kontingenční tabulku"
-        wherevalue = None if where is None else re.sub(r'{([^:"]*):', r'{"\1":', where) 
+        print(where, flush=True)
+        wherevalue = None if where is None else re.sub(r'{([^:"]*):', r'{"\1":', where)
+        print(wherevalue, flush=True) 
         wherejson = json.loads(wherevalue)
         pd = await resolve_json(
             variables={
