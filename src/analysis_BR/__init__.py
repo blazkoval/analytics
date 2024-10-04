@@ -6,7 +6,7 @@ import pandas as pd
 # https://github.com/blazkoval/Projekt-kontingencni-tabulka/tree/main/notebooks/hrbolek
 #
 #####################################################################################
-query = """query($where: GroupInputWhereFilter){
+query = """query($where: EventInputFilter){
     result: eventPage (where: $where, limit:1000) {
     id
     name
@@ -34,7 +34,7 @@ query = """query($where: GroupInputWhereFilter){
       ]
     }
 """
-# where: {startdate: {_gt: "2022-09-01T00:00:00"}}
+# where: {startdate:{_gt:"2022-09-01T00:00:00"}}
 async def resolve_json(variables, cookies):
     assert "where" in variables, f"missing where in parameters"
     jsonresponse = await queryGQL(
