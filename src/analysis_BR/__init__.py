@@ -81,7 +81,7 @@ import string
 import openpyxl
 from tempfile import NamedTemporaryFile
 from fastapi import APIRouter, Request, Query, Response
-from ..utils import process_df_as_html_page
+from ..utils import process_df_as_html_page, process_df_as_html_table
 import json
 import re
 import io
@@ -100,13 +100,13 @@ def createRouter(prefix):
         "HTML tabulka s daty pro výpočet kontingenční tabulky"
         wherevalue = None if where is None else re.sub(r'{([^:"]*):', r'{"\1":', where) 
         wherejson = json.loads(wherevalue)
-        pd = await resolve_flat_json(
+        data = await resolve_flat_json(
             variables={
                 "where": wherejson
             },
             cookies=request.cookies
         )
-        df = pd.DataFrame(pd)
+        df = pd.DataFrame(data)
         return await process_df_as_html_page(df)
     
     @router.get(f"{mainpath}/flatjson", tags=tags, summary="Data ve formátu JSON transformována do podoby vstupu pro kontingenční tabulku")
@@ -180,5 +180,22 @@ def createRouter(prefix):
                 'Content-Disposition': 'attachment; filename="Analyza.xlsx"'
             }
             return Response(stream, media_type='application/vnd.ms-excel', headers=headers)
+
+    @router.get(f"{mainpath}/pivot", tags=tags, summary="HTML kont. tabulka")
+    async def user_classification_html(
+        request: Request,
+        where: str = Query(description=WhereDescription)
+    ):
+        "HTML kont. tabulky"
+        wherevalue = None if where is None else re.sub(r'{([^:"]*):', r'{"\1":', where) 
+        wherejson = json.loads(wherevalue)
+        data = await resolve_df_pivot(
+            variables={
+                "where": wherejson
+            },
+            cookies=request.cookies
+        )
         
+        return await process_df_as_html_page(data)
+    # vytvořit nový html pro kontigenční tabulku    
     return router
